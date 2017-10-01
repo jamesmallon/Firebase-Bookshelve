@@ -39,14 +39,14 @@ window.addEventListener('load', function() {
 
     (function() {
         var config = {
-            apiKey: "",
-            authDomain: "",
-            databaseURL: "",
-            storageBucket: "",
-            messagingSenderId: ""
+            apiKey: "DIzcSyDjFReeborGgXYZfCV5XbBIN_THx9z76Pk",
+            authDomain: "yourapp-420d2.firebaseapp.com",
+            databaseURL: "https://yourapp-420d2.firebaseio.com",
+            storageBucket: "yourapp-420d2.appspot.com",
+            messagingSenderId: "706701594873"
         };
         firebase.initializeApp(config);
-        firebase.auth().signInWithEmailAndPassword('', '')
+        firebase.auth().signInWithEmailAndPassword('youremail@mail.com', 'yourpassword')
             .catch(function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
