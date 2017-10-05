@@ -3,7 +3,7 @@
 # set variables to be used after
 dirIn="/home/$USER/Calibre Library/"
 dirOut="/home/$USER/Documents/Books/html-books/"
-dirComm="/home/$USER/Documents/Commandous/firebase/"
+dirComm="./firebase/"
 
 # transfer files
 find "$dirIn" -iname '*.htmlz' -exec cp {} "$dirOut" \;
@@ -26,6 +26,7 @@ find "$dirOut" -iname '*.css' -exec sed -i '$ a ::-webkit-scrollbar {width: 2px;
 cp "${dirComm}/bookshelve.js" "$dirOut"
 cp "${dirComm}/milkway.jpg" "$dirOut"
 cp "${dirComm}/earth.png" "$dirOut"
+cp "${dirComm}/favicon.png" "$dirOut"
 
 # add scripts
 find "$dirOut" -iname 'index.html' -exec sed -i '$ a <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>' {} \;
@@ -34,7 +35,8 @@ find "$dirOut" -iname 'index.html' -exec sed -i '$ a <script type="text/javascri
 # create index
 dirOutIndex="${dirOut}index.html"
 
-echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Books</title></head><body style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(milkway.jpg)  no-repeat fixed center;">' >> "$dirOutIndex"
+# tempĺateHtml=`cat ./firebase/html-template.html`
+echo `cat ./firebase/html-template.html` >> "$dirOutIndex"
 
 # cd "$dirOut"
 declare -a dirs
@@ -42,15 +44,20 @@ i=1
 for d in $dirOut*
 # for d in $dirOut
 do
-    dirs[i++]="${d%/}"
+	dirs[i++]="${d%/}"
 done
 
 for((i=1;i<=${#dirs[@]};i++))
 do
-  if [ "${dirs[i]}" != "${dirOut}bookshelve.js" ] && [ "${dirs[i]}" != "${dirOut}index.html" ] && [ "${dirs[i]}" != "${dirOut}milkway.jpg" ] && [ "${dirs[i]}" != "${dirOut}earth.png" ]; then
-    echo '<a href="'${dirs[i]}'/index.html"><img src="'${dirs[i]}'/cover.jpg" style="height: 10em; margin-left: 2em;"/></a>' >> "$dirOutIndex"
-    echo -e "<link href='https://fonts.googleapis.com/css?family=Gentium+Book+Basic' rel='stylesheet'>\n"$(cat "${dirs[i]}/index.html") > "${dirs[i]}/index.html"
-  fi
+	if [ "${dirs[i]}" != "${dirOut}bookshelve.js" ] &&
+		[ "${dirs[i]}" != "${dirOut}index.html" ] &&
+		[ "${dirs[i]}" != "${dirOut}favicon.png" ] &&
+		[ "${dirs[i]}" != "${dirOut}milkway.jpg" ] &&
+		[ "${dirs[i]}" != "${dirOut}earth.png" ] &&
+		[ "${dirs[i]}" != "${dirOut}html-template.html" ]; then
+		echo '<a href="'${dirs[i]}'/index.html"><img src="'${dirs[i]}'/cover.jpg" style="height: 10em; margin-left: 2em;"/></a>' >> "$dirOutIndex"
+		echo -e "<link href='https://fonts.googleapis.com/css?family=Gentium+Book+Basic' rel='stylesheet'>\n"$(cat "${dirs[i]}/index.html") > "${dirs[i]}/index.html"
+	fi
     # echo "${dirs[i]}"
 done
 
